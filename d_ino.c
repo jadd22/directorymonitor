@@ -23,13 +23,13 @@ int main( )
     perror( "inotify_init" );
   }
 
-  /*adding the “/tmp” directory into watch list. Here, the suggestion is to validate the existence of the directory before adding into monitoring list.*/
+  /*adding the “/tmp” directory into watch list.*/
 /*  printf("Enter your directory\n");
 
   scanf("%c",&path); */
   wd = inotify_add_watch( fd, "/tmp", IN_CREATE | IN_DELETE );
 
-  /*read to determine the event change happens on “/tmp” directory. Actually this read blocks until the change event occurs*/ 
+  /*read to determine the event change happens on “/tmp”,read until changes are made */ 
 
   length = read( fd, buffer, EVENT_BUF_LEN ); 
 
@@ -38,7 +38,7 @@ int main( )
     perror( "read" );
   }  
 
-  /*actually read return the list of change events happens. Here, read the change event one by one and process it accordingly.*/
+  /*read return the list of change events happens*/
   while ( i < length ) {     struct inotify_event *event = ( struct inotify_event * ) &buffer[ i ];     if ( event->len ) {
       if ( event->mask & IN_CREATE ) {
         if ( event->mask & IN_ISDIR ) {
